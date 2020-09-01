@@ -12,32 +12,38 @@ class TransactionManager extends StatefulWidget {
 class _TransactionManagerState extends State<TransactionManager> {
   final List<Transaction> _userTransactions = [
     Transaction(
-      id: DateTime.now().toString(),
-      title: 'New Shoes',
-      amount: 69.99,
-      date: DateTime.now()
-    ),
+        id: DateTime.now().toString(),
+        title: 'New Shoes',
+        amount: 69.99,
+        date: DateTime.now()),
     Transaction(
-      id: DateTime.now().toString(),
-      title: 'Skyrim VR',
-      amount: 59.99,
-      date: DateTime.now()
-    ),
+        id: DateTime.now().toString(),
+        title: 'Skyrim VR',
+        amount: 59.99,
+        date: DateTime.now()),
   ];
   void handleSubmit({String title, double amount}) {
     final tx = Transaction(
-      id: DateTime.now().toString(),
-      amount: amount,
-      date: DateTime.now(),
-      title: title
-    );
+        id: DateTime.now().toString(),
+        amount: amount,
+        date: DateTime.now(),
+        title: title);
     setState(() => _userTransactions.add(tx));
   }
+
   @override
   Widget build(BuildContext ctx) {
-    return Column(children: [
-      TransactionForm(this.handleSubmit),
-      ..._userTransactions.map((tx) => UserTransaction(tx)).toList()
-    ],);
+    return Column(
+      children: [
+        TransactionForm(this.handleSubmit),
+        Container(
+            height: 300,
+            child: ListView.builder(
+                itemBuilder: (ctx, i) => UserTransaction(_userTransactions[i]),
+                itemCount: _userTransactions.length,
+                )
+        )
+      ],
+    );
   }
 }
