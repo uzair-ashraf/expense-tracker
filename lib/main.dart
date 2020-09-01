@@ -1,27 +1,81 @@
 import 'package:flutter/material.dart';
 
-import './widgets/transaction-manager.dart';
+import './models/transaction.dart';
+import './widgets/user-transaction.dart';
+import './widgets/transaction-form.dart';
 
 void main() {
-  return runApp(App());
+  return runApp(MaterialApp(
+        home:App()));
 }
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  final List<Transaction> _userTransactions = [
+    Transaction(
+        id: DateTime.now().toString(),
+        title: 'New Shoes',
+        amount: 69.99,
+        date: DateTime.now()),
+    Transaction(
+        id: DateTime.now().toString(),
+        title: 'Skyrim VR',
+        amount: 59.99,
+        date: DateTime.now()),
+  ];
+  void handleSubmit({String title, double amount}) {
+    final tx = Transaction(
+        id: DateTime.now().toString(),
+        amount: amount,
+        date: DateTime.now(),
+        title: title);
+    setState(() => _userTransactions.add(tx));
+  }
+
+  void triggerAddTransactionModal(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return GestureDetector(
+            child: TransactionForm(this.handleSubmit),
+            onTap: () {},
+            behavior: HitTestBehavior.opaque,
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext ctx) {
-    return MaterialApp(
-        home: Scaffold(
+    return  Scaffold(
       appBar: AppBar(
         title: Text('Expense Tracker'),
         backgroundColor: Colors.purple[800],
+        actions: [
+          IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () => this.triggerAddTransactionModal(ctx))
+        ],
       ),
       body: SingleChildScrollView(
-              child: Column(
-          children: [TransactionManager()],
+        child: Column(
+          children: [
+            // TransactionForm(this.handleSubmit),
+            Container(
+                height: 300,
+                child: ListView.builder(
+                  itemBuilder: (ctx, i) =>
+                      UserTransaction(_userTransactions[i]),
+                  itemCount: _userTransactions.length,
+                ))
+          ],
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
         ),
       ),
-    ));
+    );
   }
 }
