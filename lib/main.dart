@@ -15,10 +15,12 @@ class App extends StatelessWidget {
         title: Text('Expense Tracker'),
         backgroundColor: Colors.purple[800],
       ),
-      body: Column(
-        children: [TransactionManager()],
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      body: SingleChildScrollView(
+              child: Column(
+          children: [TransactionManager()],
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+        ),
       ),
     ));
   }

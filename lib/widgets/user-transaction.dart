@@ -19,7 +19,7 @@ class UserTransaction extends StatelessWidget {
               Container(
                 child: Container(
                   child: Text(
-                    '\$${tx.amount}',
+                    '\$${tx.amount.toStringAsFixed(2)}',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
