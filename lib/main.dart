@@ -4,6 +4,7 @@ import './models/transaction.dart';
 import './widgets/user-transaction.dart';
 import './widgets/transaction-form.dart';
 import './widgets/no-transactions.dart';
+import './widgets/chart.dart';
 
 void main() {
   return runApp(MaterialApp(
@@ -65,7 +66,7 @@ class _AppState extends State<App> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // TransactionForm(this.handleSubmit),
+            Chart(this._userTransactions),
             Container(
                 height: 300,
                 child: this._userTransactions.isEmpty
