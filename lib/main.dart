@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import './models/transaction.dart';
 import './widgets/user-transaction.dart';
 import './widgets/transaction-form.dart';
+import './widgets/no-transactions.dart';
 
 void main() {
   return runApp(MaterialApp(
-        home:App()));
+    home: App(),
+    theme: ThemeData(primarySwatch: Colors.deepPurple),
+  ));
 }
 
 class App extends StatefulWidget {
@@ -16,16 +19,16 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   final List<Transaction> _userTransactions = [
-    Transaction(
-        id: DateTime.now().toString(),
-        title: 'New Shoes',
-        amount: 69.99,
-        date: DateTime.now()),
-    Transaction(
-        id: DateTime.now().toString(),
-        title: 'Skyrim VR',
-        amount: 59.99,
-        date: DateTime.now()),
+    // Transaction(
+    //     id: DateTime.now().toString(),
+    //     title: 'New Shoes',
+    //     amount: 69.99,
+    //     date: DateTime.now()),
+    // Transaction(
+    //     id: DateTime.now().toString(),
+    //     title: 'Skyrim VR',
+    //     amount: 59.99,
+    //     date: DateTime.now()),
   ];
   void handleSubmit({String title, double amount}) {
     final tx = Transaction(
@@ -50,10 +53,9 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext ctx) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text('Expense Tracker'),
-        backgroundColor: Colors.purple[800],
         actions: [
           IconButton(
               icon: Icon(Icons.add),
@@ -66,11 +68,13 @@ class _AppState extends State<App> {
             // TransactionForm(this.handleSubmit),
             Container(
                 height: 300,
-                child: ListView.builder(
-                  itemBuilder: (ctx, i) =>
-                      UserTransaction(_userTransactions[i]),
-                  itemCount: _userTransactions.length,
-                ))
+                child: this._userTransactions.isEmpty
+                    ? NoTransactionsMessage()
+                    : ListView.builder(
+                        itemBuilder: (ctx, i) =>
+                            UserTransaction(_userTransactions[i]),
+                        itemCount: _userTransactions.length,
+                      ))
           ],
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

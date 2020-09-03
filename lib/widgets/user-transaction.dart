@@ -27,10 +27,10 @@ class UserTransaction extends StatelessWidget {
                   ),
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                      color: Colors.deepPurpleAccent[700],
+                      color: Theme.of(ctx).primaryColorDark,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                          color: Colors.deepPurpleAccent[700],
+                          color: Theme.of(ctx).primaryColorDark,
                           style: BorderStyle.solid,
                           width: 4.0)),
                 ),
@@ -40,7 +40,8 @@ class UserTransaction extends StatelessWidget {
                   Container(
                     child: Text(
                       tx.title,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     margin: EdgeInsets.only(bottom: 6),
                   ),
