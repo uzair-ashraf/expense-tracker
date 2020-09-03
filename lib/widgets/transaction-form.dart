@@ -16,9 +16,11 @@ class _TransactionFormState extends State<TransactionForm> {
 
   void processSubmit() {
     final String title = this.titleInput.text;
-    final double amount = double.parse(this.amountInput.text.isEmpty ? '0' : this.amountInput.text);
-    if(title.isEmpty || amount <= 0) return;
+    final double amount = double.parse(
+        this.amountInput.text.isEmpty ? '0' : this.amountInput.text);
+    if (title.isEmpty || amount <= 0) return;
     widget._handleSubmit(title: title, amount: amount);
+    Navigator.of(context).pop();
   }
 
   @override
