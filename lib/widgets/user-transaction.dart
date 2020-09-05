@@ -12,7 +12,10 @@ class UserTransaction extends StatelessWidget {
       margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
       child: ListTile(
         leading: CircleAvatar(
-          child: FittedBox(child: Text('\$${tx.amount.toStringAsFixed(2)}')),
+          child: Container(
+              margin: EdgeInsets.all(10),
+              child:
+                  FittedBox(child: Text('\$${tx.amount.toStringAsFixed(2)}'))),
           radius: 35.0,
         ),
         title: Text(
