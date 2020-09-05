@@ -7,52 +7,21 @@ class UserTransaction extends StatelessWidget {
   final Transaction tx;
   UserTransaction(this.tx);
   Widget build(BuildContext ctx) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(12, 0, 12, 0),
-      child: Card(
-        elevation: 5,
-        child: Container(
-          padding: EdgeInsets.all(6),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                child: Container(
-                  child: Text(
-                    '\$${tx.amount.toStringAsFixed(2)}',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      color: Theme.of(ctx).primaryColorDark,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                          color: Theme.of(ctx).primaryColorDark,
-                          style: BorderStyle.solid,
-                          width: 4.0)),
-                ),
-              ),
-              Column(
-                children: [
-                  Container(
-                    child: Text(
-                      tx.title,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                    margin: EdgeInsets.only(bottom: 6),
-                  ),
-                  Text(
-                    DateFormat.yMMMMEEEEd().format(tx.date),
-                    style: TextStyle(color: Colors.blueGrey[400]),
-                  )
-                ],
-              )
-            ],
-          ),
+    return Card(
+      elevation: 5,
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+      child: ListTile(
+        leading: CircleAvatar(
+          child: FittedBox(child: Text('\$${tx.amount.toStringAsFixed(2)}')),
+          radius: 35.0,
+        ),
+        title: Text(
+          tx.title,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        subtitle: Text(
+          DateFormat.yMMMMEEEEd().format(tx.date),
+          style: TextStyle(color: Colors.blueGrey[400]),
         ),
       ),
     );
