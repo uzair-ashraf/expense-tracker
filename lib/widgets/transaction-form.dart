@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
   final Function _handleSubmit;
@@ -14,11 +15,13 @@ class _TransactionFormState extends State<TransactionForm> {
 
   final amountInput = TextEditingController();
 
+  DateTime selectedDate;
+
   void processSubmit() {
     final String title = this.titleInput.text;
     final double amount = double.parse(
         this.amountInput.text.isEmpty ? '0' : this.amountInput.text);
-    if (title.isEmpty || amount <= 0) return;
+    if (title.isEmpty || amount <= 0 || selectedDate == null) return;
     widget._handleSubmit(title: title, amount: amount);
     Navigator.of(context).pop();
   }
@@ -30,7 +33,11 @@ class _TransactionFormState extends State<TransactionForm> {
             firstDate: DateTime(2019),
             lastDate: DateTime.now())
         .then((chosenDate) {
-      print(chosenDate.toString());
+      if (chosenDate == null) return;
+      setState(() {
+        selectedDate = chosenDate;
+        processSubmit();
+      });
     });
   }
 
@@ -61,10 +68,13 @@ class _TransactionFormState extends State<TransactionForm> {
                 Flexible(
                   flex: 5,
                   child: TextField(
-                    decoration: InputDecoration(labelText: 'Date'),
-                    readOnly: true,
-                    onTap: () {},
-                  ),
+                      decoration: InputDecoration(labelText: 'Date'),
+                      readOnly: true,
+                      controller: TextEditingController(
+                          text: selectedDate == null
+                              ? 'Please select a date'
+                              : DateFormat.yMMMMEEEEd().format(selectedDate)),
+                      onTap: this.generateDateModal),
                 ),
                 Flexible(
                   child: IconButton(
