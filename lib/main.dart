@@ -44,12 +44,29 @@ class _AppState extends State<App> {
     setState(() => this._userTransactions.removeWhere((t) => t.id == id));
   }
 
+  void handleEdit({String title, double amount, DateTime date, Key id}) {
+    final Transaction tx = this._userTransactions.firstWhere((tx) => tx.id == id);
+    setState(() {
+      tx.title = title;
+      tx.amount = amount;
+      tx.date = date;
+    });
+  }
+
   void triggerAddTransactionModal(BuildContext ctx) {
+    this.showModal(ctx, false, null);
+  }
+
+  void triggerEditTransactionModal(BuildContext ctx, Transaction tx) {
+    this.showModal(ctx, true, tx);
+  }
+
+  void showModal(BuildContext ctx, bool isEditing, Transaction tx) {
     showModalBottomSheet(
         context: ctx,
         builder: (_) {
           return GestureDetector(
-            child: TransactionForm(this.handleSubmit),
+            child: TransactionForm(this.handleSubmit, isEditing, this.handleEdit, tx),
             onTap: () {},
             behavior: HitTestBehavior.opaque,
           );
@@ -77,7 +94,7 @@ class _AppState extends State<App> {
                     ? NoTransactionsMessage()
                     : ListView.builder(
                         itemBuilder: (ctx, i) => UserTransaction(
-                            _userTransactions[i], this.handleDelete),
+                            _userTransactions[i], this.handleDelete, () => this.triggerEditTransactionModal(ctx, _userTransactions[i])),
                         itemCount: _userTransactions.length,
                       ))
           ],

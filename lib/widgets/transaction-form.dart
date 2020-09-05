@@ -1,28 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../models/transaction.dart';
+
+// ignore: must_be_immutable
 class TransactionForm extends StatefulWidget {
   final Function _handleSubmit;
+  final Function _handleEdit;
+  final bool isEditing;
+  Transaction editingTransaction;
+  final titleInput = TextEditingController();
+  final amountInput = TextEditingController();
+  DateTime selectedDate;
 
-  TransactionForm(this._handleSubmit);
+  TransactionForm(this._handleSubmit, this.isEditing, this._handleEdit, this.editingTransaction) {
+    if(isEditing) {
+      final Transaction tx = editingTransaction;
+      titleInput.text = tx.title;
+      amountInput.text = tx.amount.toStringAsFixed(2);
+      selectedDate = tx.date;
+    }
+  }
 
   @override
   _TransactionFormState createState() => _TransactionFormState();
 }
 
 class _TransactionFormState extends State<TransactionForm> {
-  final titleInput = TextEditingController();
-
-  final amountInput = TextEditingController();
-
-  DateTime selectedDate;
 
   void processSubmit() {
-    final String title = this.titleInput.text;
+    final String title = widget.titleInput.text;
     final double amount = double.parse(
-        this.amountInput.text.isEmpty ? '0' : this.amountInput.text);
-    if (title.isEmpty || amount <= 0 || selectedDate == null) return;
-    widget._handleSubmit(title: title, amount: amount, date: selectedDate);
+        widget.amountInput.text.isEmpty ? '0' : widget.amountInput.text);
+    if (title.isEmpty || amount <= 0 || widget.selectedDate == null) return;
+    widget._handleSubmit(title: title, amount: amount, date: widget.selectedDate);
+    Navigator.of(context).pop();
+  }
+  void processEdit() {
+    final String title = widget.titleInput.text;
+    final double amount = double.parse(
+    widget.amountInput.text.isEmpty ? '0' : widget.amountInput.text);
+    if (title.isEmpty || amount <= 0 || widget.selectedDate == null) return;
+    widget._handleEdit(title: title, amount: amount, date: widget.selectedDate, id: widget.editingTransaction.id);
     Navigator.of(context).pop();
   }
 
@@ -35,8 +54,12 @@ class _TransactionFormState extends State<TransactionForm> {
         .then((chosenDate) {
       if (chosenDate == null) return;
       setState(() {
-        selectedDate = chosenDate;
-        processSubmit();
+        widget.selectedDate = chosenDate;
+        if(widget.isEditing) {
+          processEdit();
+        } else {
+          processSubmit();
+        }
       });
     });
   }
@@ -52,14 +75,14 @@ class _TransactionFormState extends State<TransactionForm> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             TextField(
-              controller: titleInput,
+              controller: widget.titleInput,
               decoration: InputDecoration(labelText: 'Expense'),
-              onSubmitted: (_) => processSubmit(),
+              onSubmitted: (_) => widget.isEditing ? processEdit : processSubmit,
             ),
             TextField(
-              controller: amountInput,
+              controller: widget.amountInput,
               decoration: InputDecoration(labelText: 'Cost'),
-              onSubmitted: (_) => processSubmit(),
+              onSubmitted: (_) => widget.isEditing ? processEdit : processSubmit,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
             ),
             Row(
@@ -71,9 +94,9 @@ class _TransactionFormState extends State<TransactionForm> {
                       decoration: InputDecoration(labelText: 'Date'),
                       readOnly: true,
                       controller: TextEditingController(
-                          text: selectedDate == null
+                          text: widget.selectedDate == null
                               ? 'Please select a date'
-                              : DateFormat.yMMMMEEEEd().format(selectedDate)),
+                              : DateFormat.yMMMMEEEEd().format(widget.selectedDate)),
                       onTap: this.generateDateModal),
                 ),
                 Flexible(
@@ -89,11 +112,11 @@ class _TransactionFormState extends State<TransactionForm> {
                 margin: EdgeInsets.fromLTRB(0, 14, 5, 4),
                 child: RaisedButton(
                   child: Text(
-                    'Add Transaction',
+                    '${widget.isEditing ? 'Edit Transaction' : 'Add Transaction'}',
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                   color: Colors.deepPurple[900],
-                  onPressed: processSubmit,
+                  onPressed: widget.isEditing ? processEdit : processSubmit,
                 ))
           ],
         ),
