@@ -17,6 +17,7 @@ class ChartBlock extends StatelessWidget {
             height: 60,
             margin: EdgeInsets.all(4),
             child: Stack(
+              alignment: Alignment.bottomCenter,
               children: [
                 Container(
                   decoration: BoxDecoration(

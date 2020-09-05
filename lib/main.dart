@@ -31,11 +31,11 @@ class _AppState extends State<App> {
     //     amount: 59.99,
     //     date: DateTime.now()),
   ];
-  void handleSubmit({String title, double amount}) {
+  void handleSubmit({String title, double amount, DateTime date}) {
     final tx = Transaction(
         id: DateTime.now().toString(),
         amount: amount,
-        date: DateTime.now(),
+        date: date,
         title: title);
     setState(() => _userTransactions.add(tx));
   }

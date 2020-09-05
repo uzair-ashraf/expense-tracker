@@ -22,7 +22,7 @@ class _TransactionFormState extends State<TransactionForm> {
     final double amount = double.parse(
         this.amountInput.text.isEmpty ? '0' : this.amountInput.text);
     if (title.isEmpty || amount <= 0 || selectedDate == null) return;
-    widget._handleSubmit(title: title, amount: amount);
+    widget._handleSubmit(title: title, amount: amount, date: selectedDate);
     Navigator.of(context).pop();
   }
 
