@@ -23,6 +23,17 @@ class _TransactionFormState extends State<TransactionForm> {
     Navigator.of(context).pop();
   }
 
+  void generateDateModal() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2019),
+            lastDate: DateTime.now())
+        .then((chosenDate) {
+      print(chosenDate.toString());
+    });
+  }
+
   @override
   Widget build(BuildContext ctx) {
     return Card(
@@ -44,8 +55,28 @@ class _TransactionFormState extends State<TransactionForm> {
               onSubmitted: (_) => processSubmit(),
               keyboardType: TextInputType.numberWithOptions(decimal: true),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  flex: 5,
+                  child: TextField(
+                    decoration: InputDecoration(labelText: 'Date'),
+                    readOnly: true,
+                    onTap: () {},
+                  ),
+                ),
+                Flexible(
+                  child: IconButton(
+                    color: Colors.deepPurple,
+                    icon: Icon(Icons.date_range_rounded),
+                    onPressed: this.generateDateModal,
+                  ),
+                )
+              ],
+            ),
             Container(
-                margin: EdgeInsets.fromLTRB(0, 8, 5, 4),
+                margin: EdgeInsets.fromLTRB(0, 14, 5, 4),
                 child: RaisedButton(
                   child: Text(
                     'Add Transaction',
