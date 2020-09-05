@@ -33,11 +33,15 @@ class _AppState extends State<App> {
   ];
   void handleSubmit({String title, double amount, DateTime date}) {
     final tx = Transaction(
-        id: DateTime.now().toString(),
+        id: ValueKey(DateTime.now().toString()),
         amount: amount,
         date: date,
         title: title);
     setState(() => _userTransactions.add(tx));
+  }
+
+  void handleDelete(Key id) {
+    setState(() => this._userTransactions.removeWhere((t) => t.id == id));
   }
 
   void triggerAddTransactionModal(BuildContext ctx) {
@@ -72,8 +76,8 @@ class _AppState extends State<App> {
                 child: this._userTransactions.isEmpty
                     ? NoTransactionsMessage()
                     : ListView.builder(
-                        itemBuilder: (ctx, i) =>
-                            UserTransaction(_userTransactions[i]),
+                        itemBuilder: (ctx, i) => UserTransaction(
+                            _userTransactions[i], this.handleDelete),
                         itemCount: _userTransactions.length,
                       ))
           ],

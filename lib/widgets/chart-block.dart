@@ -8,10 +8,14 @@ class ChartBlock extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
     return Container(
+      width: 30,
       margin: EdgeInsets.all(8),
       child: Column(
         children: [
-          Text('\$${amountSpent.toStringAsFixed(0)}'),
+          Container(
+              height: 20,
+              child: FittedBox(
+                  child: Text('\$${amountSpent.toStringAsFixed(0)}'))),
           Container(
             width: 20,
             height: 60,
