@@ -45,7 +45,8 @@ class _AppState extends State<App> {
   }
 
   void handleEdit({String title, double amount, DateTime date, Key id}) {
-    final Transaction tx = this._userTransactions.firstWhere((tx) => tx.id == id);
+    final Transaction tx =
+        this._userTransactions.firstWhere((tx) => tx.id == id);
     setState(() {
       tx.title = title;
       tx.amount = amount;
@@ -66,7 +67,8 @@ class _AppState extends State<App> {
         context: ctx,
         builder: (_) {
           return GestureDetector(
-            child: TransactionForm(this.handleSubmit, isEditing, this.handleEdit, tx),
+            child: TransactionForm(
+                this.handleSubmit, isEditing, this.handleEdit, tx),
             onTap: () {},
             behavior: HitTestBehavior.opaque,
           );
@@ -75,26 +77,35 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext ctx) {
+    final appBar = AppBar(
+      title: Text('Expense Tracker'),
+      actions: [
+        IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => this.triggerAddTransactionModal(ctx))
+      ],
+    );
+    final adjustedHeight = MediaQuery.of(ctx).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(ctx).padding.top;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Expense Tracker'),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () => this.triggerAddTransactionModal(ctx))
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Chart(this._userTransactions),
             Container(
-                height: 300,
+                height: adjustedHeight * 0.3,
+                child: Chart(this._userTransactions)),
+            Container(
+                height: adjustedHeight * 0.7,
                 child: this._userTransactions.isEmpty
                     ? NoTransactionsMessage()
                     : ListView.builder(
                         itemBuilder: (ctx, i) => UserTransaction(
-                            _userTransactions[i], this.handleDelete, () => this.triggerEditTransactionModal(ctx, _userTransactions[i])),
+                            _userTransactions[i],
+                            this.handleDelete,
+                            () => this.triggerEditTransactionModal(
+                                ctx, _userTransactions[i])),
                         itemCount: _userTransactions.length,
                       ))
           ],

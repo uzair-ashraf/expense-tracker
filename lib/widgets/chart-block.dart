@@ -4,7 +4,8 @@ class ChartBlock extends StatelessWidget {
   final String day;
   final double amountSpent;
   final double totalSpent;
-  ChartBlock({this.day, this.amountSpent, this.totalSpent});
+  final BoxConstraints constraints;
+  ChartBlock({this.day, this.amountSpent, this.totalSpent, this.constraints});
   @override
   Widget build(BuildContext ctx) {
     return Container(
@@ -13,12 +14,12 @@ class ChartBlock extends StatelessWidget {
       child: Column(
         children: [
           Container(
-              height: 20,
+              height: constraints.maxHeight * 0.12,
               child: FittedBox(
                   child: Text('\$${amountSpent.toStringAsFixed(0)}'))),
           Container(
             width: 20,
-            height: 60,
+            height: constraints.maxHeight * 0.5,
             margin: EdgeInsets.all(4),
             child: Stack(
               alignment: Alignment.bottomCenter,
@@ -35,7 +36,9 @@ class ChartBlock extends StatelessWidget {
               ],
             ),
           ),
-          Text(day)
+          Container(
+              height: constraints.maxHeight * 0.12,
+              child: FittedBox(child: Text(day)))
         ],
       ),
     );

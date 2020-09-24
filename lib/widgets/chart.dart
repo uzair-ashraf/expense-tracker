@@ -28,13 +28,18 @@ class Chart extends StatelessWidget {
       this.organziedTransactions[dayKey] += amount;
     }
   }
-  List<ChartBlock> generateChartBlocks() {
-    List<ChartBlock> chartBlocks = [];
+  List<Widget> generateChartBlocks() {
+    List<Widget> chartBlocks = [];
     this.organziedTransactions.forEach((key, value) {
-      chartBlocks.add(ChartBlock(
-        day: key,
-        amountSpent: value,
-        totalSpent: this.totalSpent,
+      chartBlocks.add(LayoutBuilder(
+        builder: (ctx, constraints) {
+          return ChartBlock(
+            day: key,
+            amountSpent: value,
+            totalSpent: this.totalSpent,
+            constraints: constraints,
+          );
+        },
       ));
     });
     return chartBlocks;
