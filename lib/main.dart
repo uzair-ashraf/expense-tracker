@@ -88,18 +88,21 @@ class _AppState extends State<App> {
     final adjustedHeight = MediaQuery.of(ctx).size.height -
         appBar.preferredSize.height -
         MediaQuery.of(ctx).padding.top;
+    final isLandscape = MediaQuery.of(ctx).orientation == Orientation.landscape;
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
-                height: adjustedHeight * 0.3,
+                height: adjustedHeight * (isLandscape ? 0.45 : 0.3),
                 child: Chart(this._userTransactions)),
             Container(
-                height: adjustedHeight * 0.7,
+                height: adjustedHeight * (isLandscape ? 0.55 : 0.7),
                 child: this._userTransactions.isEmpty
-                    ? NoTransactionsMessage()
+                    ? LayoutBuilder(builder: (ctx, constraints) {
+                        return NoTransactionsMessage(constraints, isLandscape);
+                      })
                     : ListView.builder(
                         itemBuilder: (ctx, i) => UserTransaction(
                             _userTransactions[i],
