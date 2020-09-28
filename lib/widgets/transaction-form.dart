@@ -13,8 +13,9 @@ class TransactionForm extends StatefulWidget {
   final amountInput = TextEditingController();
   DateTime selectedDate;
 
-  TransactionForm(this._handleSubmit, this.isEditing, this._handleEdit, this.editingTransaction) {
-    if(isEditing) {
+  TransactionForm(this._handleSubmit, this.isEditing, this._handleEdit,
+      this.editingTransaction) {
+    if (isEditing) {
       final Transaction tx = editingTransaction;
       titleInput.text = tx.title;
       amountInput.text = tx.amount.toStringAsFixed(2);
@@ -27,21 +28,26 @@ class TransactionForm extends StatefulWidget {
 }
 
 class _TransactionFormState extends State<TransactionForm> {
-
   void processSubmit() {
     final String title = widget.titleInput.text;
     final double amount = double.parse(
         widget.amountInput.text.isEmpty ? '0' : widget.amountInput.text);
     if (title.isEmpty || amount <= 0 || widget.selectedDate == null) return;
-    widget._handleSubmit(title: title, amount: amount, date: widget.selectedDate);
+    widget._handleSubmit(
+        title: title, amount: amount, date: widget.selectedDate);
     Navigator.of(context).pop();
   }
+
   void processEdit() {
     final String title = widget.titleInput.text;
     final double amount = double.parse(
-    widget.amountInput.text.isEmpty ? '0' : widget.amountInput.text);
+        widget.amountInput.text.isEmpty ? '0' : widget.amountInput.text);
     if (title.isEmpty || amount <= 0 || widget.selectedDate == null) return;
-    widget._handleEdit(title: title, amount: amount, date: widget.selectedDate, id: widget.editingTransaction.id);
+    widget._handleEdit(
+        title: title,
+        amount: amount,
+        date: widget.selectedDate,
+        id: widget.editingTransaction.id);
     Navigator.of(context).pop();
   }
 
@@ -55,7 +61,7 @@ class _TransactionFormState extends State<TransactionForm> {
       if (chosenDate == null) return;
       setState(() {
         widget.selectedDate = chosenDate;
-        if(widget.isEditing) {
+        if (widget.isEditing) {
           processEdit();
         } else {
           processSubmit();
@@ -66,59 +72,68 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext ctx) {
-    return Card(
-      margin: EdgeInsets.all(12),
-      child: Container(
+    return SingleChildScrollView(
+      child: Card(
         margin: EdgeInsets.all(12),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            TextField(
-              controller: widget.titleInput,
-              decoration: InputDecoration(labelText: 'Expense'),
-              onSubmitted: (_) => widget.isEditing ? processEdit : processSubmit,
-            ),
-            TextField(
-              controller: widget.amountInput,
-              decoration: InputDecoration(labelText: 'Cost'),
-              onSubmitted: (_) => widget.isEditing ? processEdit : processSubmit,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  flex: 5,
-                  child: TextField(
-                      decoration: InputDecoration(labelText: 'Date'),
-                      readOnly: true,
-                      controller: TextEditingController(
-                          text: widget.selectedDate == null
-                              ? 'Please select a date'
-                              : DateFormat.yMMMMEEEEd().format(widget.selectedDate)),
-                      onTap: this.generateDateModal),
-                ),
-                Flexible(
-                  child: IconButton(
-                    color: Colors.deepPurple,
-                    icon: Icon(Icons.date_range_rounded),
-                    onPressed: this.generateDateModal,
+        child: Container(
+          margin: EdgeInsets.only(
+              top: 12,
+              left: 12,
+              right: 12,
+              bottom: MediaQuery.of(ctx).viewInsets.bottom + 12),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextField(
+                controller: widget.titleInput,
+                decoration: InputDecoration(labelText: 'Expense'),
+                onSubmitted: (_) =>
+                    widget.isEditing ? processEdit : processSubmit,
+              ),
+              TextField(
+                controller: widget.amountInput,
+                decoration: InputDecoration(labelText: 'Cost'),
+                onSubmitted: (_) =>
+                    widget.isEditing ? processEdit : processSubmit,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    flex: 5,
+                    child: TextField(
+                        decoration: InputDecoration(labelText: 'Date'),
+                        readOnly: true,
+                        controller: TextEditingController(
+                            text: widget.selectedDate == null
+                                ? 'Please select a date'
+                                : DateFormat.yMMMMEEEEd()
+                                    .format(widget.selectedDate)),
+                        onTap: this.generateDateModal),
                   ),
-                )
-              ],
-            ),
-            Container(
-                margin: EdgeInsets.fromLTRB(0, 14, 5, 4),
-                child: RaisedButton(
-                  child: Text(
-                    '${widget.isEditing ? 'Edit Transaction' : 'Add Transaction'}',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                  color: Colors.deepPurple[900],
-                  onPressed: widget.isEditing ? processEdit : processSubmit,
-                ))
-          ],
+                  Flexible(
+                    child: IconButton(
+                      color: Colors.deepPurple,
+                      icon: Icon(Icons.date_range_rounded),
+                      onPressed: this.generateDateModal,
+                    ),
+                  )
+                ],
+              ),
+              Container(
+                  margin: EdgeInsets.fromLTRB(0, 14, 5, 4),
+                  child: RaisedButton(
+                    child: Text(
+                      '${widget.isEditing ? 'Edit Transaction' : 'Add Transaction'}',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                    color: Colors.deepPurple[900],
+                    onPressed: widget.isEditing ? processEdit : processSubmit,
+                  ))
+            ],
+          ),
         ),
       ),
     );
