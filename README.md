@@ -1,16 +1,51 @@
-# expense_tracker
+# Expense Tracker
 
-A new Flutter project.
+An IOS/Android application for users to keep track of their expenses
 
-## Getting Started
+## Technologies Used
 
-This project is a starting point for a Flutter application.
+- Flutter 1.22
+- Dart 2.33
 
-A few resources to get you started if this is your first Flutter project:
+## Features
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- User can add expense
+- User can delete expense
+- User can edit expense
+- User can switch to landscape mode
+- User can select date of expense
+- User can see chart of expenses based of day of the week
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Preview
+
+<p align="center">
+  <img src="./doc-images/expense-tracker.gif" alt="Preview image of expense tracker app">
+</p>
+
+## Development
+
+#### System Requirements
+
+- MacOS Catalina (IOS only)
+- XCode (IOS only)
+- Android Studio (Android only)
+- Dart SDK
+- Flutter SDK
+- Cocoapods
+
+#### Getting Started
+
+1. Clone the repository
+  ```shell
+  git clone https://github.com/uzair-ashraf/expense-tracker.git
+  ```
+
+2. Install dependencies
+  ```shell
+  flutter pub get
+  ```
+
+3. Compile your code
+  ```shell
+  flutter run
+  ```

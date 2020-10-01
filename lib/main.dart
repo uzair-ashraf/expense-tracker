@@ -99,29 +99,31 @@ class _AppState extends State<App> {
     final adjustedHeight = MediaQuery.of(ctx).size.height -
         appBar.preferredSize.height -
         MediaQuery.of(ctx).padding.top;
-    final pageBody = SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-              height: adjustedHeight * (isLandscape ? 0.45 : 0.3),
-              child: Chart(this._userTransactions)),
-          Container(
-              height: adjustedHeight * (isLandscape ? 0.55 : 0.7),
-              child: this._userTransactions.isEmpty
-                  ? LayoutBuilder(builder: (ctx, constraints) {
-                      return NoTransactionsMessage(constraints, isLandscape);
-                    })
-                  : ListView.builder(
-                      itemBuilder: (ctx, i) => UserTransaction(
-                          _userTransactions[i],
-                          this.handleDelete,
-                          () => this.triggerEditTransactionModal(
-                              ctx, _userTransactions[i])),
-                      itemCount: _userTransactions.length,
-                    ))
-        ],
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+    final pageBody = SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+                height: adjustedHeight * (isLandscape ? 0.45 : 0.3),
+                child: Chart(this._userTransactions)),
+            Container(
+                height: adjustedHeight * (isLandscape ? 0.55 : 0.7),
+                child: this._userTransactions.isEmpty
+                    ? LayoutBuilder(builder: (ctx, constraints) {
+                        return NoTransactionsMessage(constraints, isLandscape);
+                      })
+                    : ListView.builder(
+                        itemBuilder: (ctx, i) => UserTransaction(
+                            _userTransactions[i],
+                            this.handleDelete,
+                            () => this.triggerEditTransactionModal(
+                                ctx, _userTransactions[i])),
+                        itemCount: _userTransactions.length,
+                      ))
+          ],
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+        ),
       ),
     );
     return Platform.isIOS
