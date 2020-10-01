@@ -14,7 +14,7 @@ An IOS/Android application for users to keep track of their expenses
 - User can edit expense
 - User can switch to landscape mode
 - User can select date of expense
-- User can see chart of expenses based of day of the week
+- User can see chart of expenses based off the day of the week
 
 ## Preview
 
